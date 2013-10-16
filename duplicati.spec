@@ -3,20 +3,21 @@ Name:		duplicati
 Version:	1.3.4
 Release:	0.1
 License:	LGPL v2+
-URL:		http://www.duplicati.com
-#Source0:	http://duplicati.googlecode.com/files/Duplicati%20%{version}.tgz
-Source0:	Duplicati %{version}.tgz
-
+Source0:	http://duplicati.googlecode.com/files/Duplicati%20%{version}.tgz?/Duplicati-%{version}.tgz
+# Source0-md5:	4980c4f6c373387e4452a983b235f7f3
+Group:		Applications
+URL:		http://www.duplicati.com/
+BuildRequires:	rpmbuild(macros) >= 1.596
 Requires:	bash
 Requires:	desktop-file-utils
+Requires:	gtk-update-icon-cache
+Requires:	hicolor-icon-theme
 Requires:	mono(System)
 Requires:	mono(System.Web)
 Requires:	mono(System.Windows.Forms)
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-# we don't want automatic dependencies generation because
-# precompiled binaries generates weird ones:
-%global __requires_exclude ^mono.*$
-
+%define		_appdir %{_prefix}/lib/%{name}
 
 %description
 Duplicati is a free backup client that securely stores encrypted,
@@ -31,26 +32,27 @@ options and tweaks like filters, deletion rules, transfer and
 bandwidth options to run backups for specific purposes.
 
 %prep
-%setup -q -c -n %{name}-%{version}-bin
+%setup -q -c
 
-
-%build
-# binary package, nothing to build
-
-%install
-rm -rf $RPM_BUILD_ROOT
-rm -rf install/
-rm -rf usr/share/pixmaps/duplicati.xpm
-
-#for files/doc declaration:
+# for files/doc declaration:
 mv usr/share/doc/duplicati/README .
 rm usr/share/doc/duplicati/changelog.Debian.gz
 mv usr/share/doc/duplicati/copyright .
 mv usr/share/doc/duplicati/changelog.gz .
-rmdir usr/share/doc/duplicati/ usr/share/doc/
-mv usr/ $RPM_BUILD_ROOT
+rmdir usr/share/doc/duplicati usr/share/doc
+
+rm -r install
+rm usr/share/pixmaps/duplicati.xpm
+
+gzip -d changelog.gz
+
+%install
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT
+cp -a usr $RPM_BUILD_ROOT
 
 # refined desktop file
+install -d $RPM_BUILD_ROOT%{_desktopdir}
 cat <<EOF > $RPM_BUILD_ROOT%{_desktopdir}/%{name}.desktop
 [Desktop Entry]
 Categories=System;Archiving;FileTools;Filesystem;
@@ -68,26 +70,44 @@ EOF
 
 desktop-file-install $RPM_BUILD_ROOT%{_desktopdir}/%{name}.desktop
 
-
-%post
-/bin/%update_icon_cache_post hicolor || :
-%{_bindir}/gtk-update-icon-cache \
-  --quiet %{_datadir}/icons/hicolor 2> /dev/null|| :
-
-%postun
-/bin/%update_icon_cache_post hicolor || :
-%{_bindir}/gtk-update-icon-cache \
-  --quiet %{_datadir}/icons/hicolor 2> /dev/null|| :
-
-%posttrans
-%{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+%update_desktop_database
+%update_icon_cache hicolor
+
+%postun
+%update_desktop_database
+%update_icon_cache hicolor
+
 %files
 %defattr(644,root,root,755)
-%doc README copyright changelog.gz
-%attr(755,root,root) %{_bindir}/*
-%{_datadir}/*
-%{_libdir}/*
+%doc README copyright changelog
+%attr(755,root,root) %{_bindir}/duplicati
+%attr(755,root,root) %{_bindir}/duplicati-commandline
+%{_desktopdir}/duplicati.desktop
+%{_pixmapsdir}/duplicati.png
+%dir %{_appdir}
+%{_appdir}/*.txt
+%{_appdir}/*.dll
+%{_appdir}/*.exe
+%{_appdir}/*.exe.config
+%{_appdir}/*.xml
+%{_appdir}/SQLite
+%{_appdir}/Tools
+%{_appdir}/alphavss
+%{_appdir}/licenses
+%dir %{_appdir}/lvm-scripts
+%attr(755,root,root) %{_appdir}/lvm-scripts/*.sh
+
+%lang(de) %{_appdir}/de-DE
+%lang(es) %{_appdir}/es-ES
+%lang(fr) %{_appdir}/fr-FR
+%lang(it) %{_appdir}/it-IT
+%lang(pt_BR) %{_appdir}/pt-BR
+%lang(ru) %{_appdir}/ru-RU
+%lang(tr_TR) %{_appdir}/tr-TR
+%lang(zh_CN) %{_appdir}/zh-CN
+%lang(zh_HK) %{_appdir}/zh-HK
+%lang(da_DK) %{_appdir}/da-DK
