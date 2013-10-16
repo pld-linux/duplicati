@@ -1,3 +1,7 @@
+# TODO
+# - mono packages can be noarch?
+# - remove non-linux binaries
+%include /usr/lib/rpm/macros.mono
 Summary:	Backup client for encrypted online backups
 Name:		duplicati
 Version:	1.3.4
@@ -12,9 +16,6 @@ Requires:	bash
 Requires:	desktop-file-utils
 Requires:	gtk-update-icon-cache
 Requires:	hicolor-icon-theme
-Requires:	mono(System)
-Requires:	mono(System.Web)
-Requires:	mono(System.Windows.Forms)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_appdir %{_prefix}/lib/%{name}
