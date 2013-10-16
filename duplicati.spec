@@ -11,6 +11,9 @@ Source0:	http://duplicati.googlecode.com/files/Duplicati%20%{version}.tgz?/Dupli
 # Source0-md5:	4980c4f6c373387e4452a983b235f7f3
 Group:		Applications
 URL:		http://www.duplicati.com/
+BuildRequires:	desktop-file-utils
+BuildRequires:	mono-devel
+BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.596
 Requires:	bash
 Requires:	desktop-file-utils
