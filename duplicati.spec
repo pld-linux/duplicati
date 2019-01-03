@@ -20,8 +20,6 @@ Source6:	duplicati.desktop
 Source7:	duplicati.service
 Group:		Applications
 URL:		http://www.duplicati.com/
-BuildRequires:	desktop-file-utils
-BuildRequires:	mono-devel
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.596
 Requires:	bash
