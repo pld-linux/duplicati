@@ -1,4 +1,3 @@
-%include /usr/lib/rpm/macros.mono
 
 # the names of the tags (used in source filenames) are insane
 %define tag_code	canary
