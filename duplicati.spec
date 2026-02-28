@@ -6,7 +6,7 @@
 Summary:	Backup client for encrypted online backups
 Name:		duplicati
 Version:	2.0.4.10
-Release:	1
+Release:	2
 License:	LGPL v2+
 Source0:	https://github.com/duplicati/duplicati/releases/download/v%{version}-%{version}_%{tag_code}_%{tag_date}/duplicati-%{version}_%{tag_code}_%{tag_date}.zip
 # Source0-md5:	5d5443e04a4a4fe462f24fb2f989ac08
