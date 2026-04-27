@@ -6,7 +6,7 @@
 Summary:	Backup client for encrypted online backups
 Name:		duplicati
 Version:	2.0.4.10
-Release:	2
+Release:	3
 License:	LGPL v2+
 Source0:	https://github.com/duplicati/duplicati/releases/download/v%{version}-%{version}_%{tag_code}_%{tag_date}/duplicati-%{version}_%{tag_code}_%{tag_date}.zip
 # Source0-md5:	5d5443e04a4a4fe462f24fb2f989ac08
@@ -31,12 +31,14 @@ Requires:	sqlite3
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_noautoreq_mono		.*
+
 %description
-Duplicati is a free, open source, backup client that securely stores encrypted,
-incremental, compressed backups on cloud storage services and remote file
-servers. It works with: Amazon S3, OneDrive, Google Drive, Rackspace Cloud
-Files, HubiC, Backblaze (B2), Amazon Cloud Drive (AmzCD), Swift / OpenStack,
-WebDAV, SSH (SFTP), FTP, and more!
+Duplicati is a free, open source, backup client that securely stores
+encrypted, incremental, compressed backups on cloud storage services
+and remote file servers. It works with: Amazon S3, OneDrive, Google
+Drive, Rackspace Cloud Files, HubiC, Backblaze (B2), Amazon Cloud
+Drive (AmzCD), Swift / OpenStack, WebDAV, SSH (SFTP), FTP, and more!
 
 %prep
 %setup -qc
@@ -47,13 +49,13 @@ install -d $RPM_BUILD_ROOT{%{_datadir}/%{name},%{_bindir},%{_iconsdir}/hicolor/{
 
 %{__cp} -a * $RPM_BUILD_ROOT%{_datadir}/%{name}
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/duplicati
-install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/duplicati-cli
-install %{SOURCE3} $RPM_BUILD_ROOT%{_bindir}/duplicati-server
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/duplicati
+cp -p %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/duplicati-cli
+cp -p %{SOURCE3} $RPM_BUILD_ROOT%{_bindir}/duplicati-server
 
-install -m644 %{SOURCE4} $RPM_BUILD_ROOT%{_iconsdir}/hicolor/scalable/apps
-install -m644 %{SOURCE5} $RPM_BUILD_ROOT%{_iconsdir}/hicolor/48x48/apps
-install -m644 %{SOURCE6} $RPM_BUILD_ROOT%{_desktopdir}
+cp -p %{SOURCE4} $RPM_BUILD_ROOT%{_iconsdir}/hicolor/scalable/apps
+cp -p %{SOURCE5} $RPM_BUILD_ROOT%{_iconsdir}/hicolor/48x48/apps
+cp -p %{SOURCE6} $RPM_BUILD_ROOT%{_desktopdir}
 
 #install -m644 %{SOURCE7} $RPM_BUILD_ROOT%{systemdunitdir}
 
